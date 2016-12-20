@@ -6,7 +6,7 @@
 #### API consumer should be able to:
 * Add any number of tags/remove them using the API.
 * Search files by a specific tag or multiple tags (with AND or OR connection, preferably both). The search should preferably support pagination.
-* -The API should also allow consumer to download all files that have some specific tag(s) by zipping them together into a single file. The summed size of the files should be validated to be below 500MB (can be configurable externally as well) for this endpoint.-
+* ~~The API should also allow consumer to download all files that have some specific tag(s) by zipping them together into a single file. The summed size of the files should be validated to be below 500MB (can be configurable externally as well) for this endpoint.~~
 
 #### Technical Requirements:
 * The Dropbox API client app that your application will use should be externally configurable - means that we should be able to pass an app key and secret of our the Dropbox App to your app externally (i.e. via environment variables), and the application should make use of them and use that app, not a built-in or hardcoded one.
