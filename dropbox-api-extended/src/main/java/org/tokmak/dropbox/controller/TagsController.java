@@ -58,13 +58,11 @@ public class TagsController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> searchDocuments(@RequestParam(required = true, value = "tags") String[] tags,
-			@RequestParam(required = true, value = "limit") Integer limit,
-			@RequestParam(required = true, value = "offset") Integer offset,
-			@PageableDefault(page = 0, size = 20) Pageable pageable) {
-		return new ResponseEntity<>(this.tagService.searchDocumentByTag(tags, pageable), HttpStatus.OK);
+			@PageableDefault(page = 0, size = 20) Pageable page) {
+		return new ResponseEntity<>(this.tagService.searchDocumentByTag(tags, page), HttpStatus.OK);
 	}
-	
-	@RequestMapping(value="/all", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<?> listAllDocuments() {
 		return new ResponseEntity<>(this.tagService.listAllDocuments(), HttpStatus.OK);
 	}

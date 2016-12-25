@@ -2,6 +2,7 @@ package org.tokmak.dropbox.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class DocumentTagService {
 			DocumentTag documentTag = new DocumentTag();
 			documentTag.setName(name);
 			documentTag.setPath(path);
-			documentTag.setTags(tags);
+			documentTag.setTags(this.makeTagsLowerCase(tags));
 			this.tagRepository.save(documentTag);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -35,24 +36,27 @@ public class DocumentTagService {
 		}
 		return true;
 	}
-	
-	public List<DocumentTag> searchDocumentByTag(String[] tags, Pageable pageable) {
-//		FacetPage<DocumentTag> documentTagPage = this.tagRepository.findByTags(Arrays.asList(searchKeys), pageable);
-//		List<DocumentTag> documentTags = documentTagPage.getContent();
-		List<DocumentTag> documentTags = this.customTagRepository.searchByTags(tags);
-		for (DocumentTag documentTag : documentTags) {
-			System.out.println(documentTag.getName());
+
+	private List<String> makeTagsLowerCase(List<String> tags) {
+		if(tags != null && !tags.isEmpty()) {
+			return tags.stream().map(s -> {
+				return s.toLowerCase();
+			}).collect(Collectors.toList());
 		}
-		return documentTags;
+		return null;
+	}
+
+	public List<DocumentTag> searchDocumentByTag(String[] tags, Pageable page) {
+		return this.customTagRepository.searchByTags(tags, page);
 	}
 
 	public boolean deleteGivenTags(String id, List<String> tags) {
 		DocumentTag documentToUpdate = this.getDocumentBy(id);
-		if(documentToUpdate != null) {
+		if (documentToUpdate != null) {
 			List<String> documentTags = documentToUpdate.getTags();
-			if(documentTags != null && !documentTags.isEmpty()) {
+			if (documentTags != null && !documentTags.isEmpty()) {
 				for (String tag : tags) {
-					if(documentTags.contains(tag)) {
+					if (documentTags.contains(tag)) {
 						documentTags.remove(tag);
 					}
 				}
@@ -66,12 +70,12 @@ public class DocumentTagService {
 
 	public boolean updateGivenTags(String id, List<String> tags) {
 		DocumentTag documentToUpdate = this.getDocumentBy(id);
-		if(documentToUpdate != null) {
+		if (documentToUpdate != null) {
 			List<String> existingTags = documentToUpdate.getTags();
-			if(existingTags != null && !existingTags.isEmpty()) {
+			if (existingTags != null && !existingTags.isEmpty()) {
 				for (String tag : tags) {
-					if(! existingTags.contains(tag)) {
-						existingTags.add(tag);
+					if (!existingTags.contains(tag)) {
+						existingTags.add(tag.toLowerCase());
 					}
 				}
 				documentToUpdate.setTags(existingTags);
@@ -83,14 +87,14 @@ public class DocumentTagService {
 		}
 		return false;
 	}
-	
+
 	private DocumentTag getDocumentBy(String id) {
 		return this.tagRepository.findOne(id);
 	}
 
 	public List<DocumentTag> listAllDocuments() {
 		SolrResultPage<DocumentTag> result = (SolrResultPage<DocumentTag>) this.tagRepository.findAll();
-		if(result != null) {
+		if (result != null) {
 			return result.getContent();
 		}
 		return Arrays.asList();
@@ -98,12 +102,11 @@ public class DocumentTagService {
 
 	public void indexDocuments(List<DocumentTagDto> allDocumentsWithPath) {
 		for (DocumentTagDto document : allDocumentsWithPath) {
-			this.createNewDocument(document.getDocumentName(), document.getDocumentPath(), null);				
+			this.createNewDocument(document.getDocumentName(), document.getDocumentPath(), null);
 		}
 	}
-	
+
 	public void removeAllDocuments() {
 		this.tagRepository.deleteAll();
 	}
-	
 }

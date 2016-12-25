@@ -18,7 +18,6 @@ import com.dropbox.core.v2.files.Metadata;
 
 @Service
 public class DropboxService {
-//	private static final String ROOT_FOLDER = "tez-makale";
 	private static final String ROOT_FOLDER = "";
 
 	@Autowired
@@ -52,7 +51,7 @@ public class DropboxService {
 		while (true) {
 			for (Metadata metadata : result.getEntries()) {
 				if (this.isFile(metadata)) {
-					documentTagList = this.printFileName(metadata, documentTagList);
+					documentTagList = this.generateDocument(metadata, documentTagList);
 				} else if (this.isFolder(metadata)) {
 					listFolder(metadata.getPathDisplay(), documentTagList);
 				}
@@ -67,7 +66,7 @@ public class DropboxService {
 		return documentTagList;
 	}
 
-	private List<DocumentTagDto> printFileName(Metadata metadata, List<DocumentTagDto> documentTagList) {
+	private List<DocumentTagDto> generateDocument(Metadata metadata, List<DocumentTagDto> documentTagList) {
 		DocumentTagDto document = new DocumentTagDto();
 		document.setDocumentPath(metadata.getPathDisplay());
 		document.setDocumentName(metadata.getName());
