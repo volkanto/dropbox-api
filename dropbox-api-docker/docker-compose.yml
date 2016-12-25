@@ -1,0 +1,9 @@
+version: "2"
+
+services:
+    api:
+        build: ./dropbox-api
+        volumes:
+            - /Users/life/Desktop/docker-test/logs:/data/log
+        ports:
+            - "8081:8081"
