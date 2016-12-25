@@ -3,7 +3,7 @@
 - - - -
 Dropbox API - Extended is a simple RESTful application that you can add, delete or search tags related with your documents on Dropbox over Dropbox API. 
 
-### Task
+#### Task
 * We ask you to build a Spring Boot application, which is a Rest API that extends the Dropbox API functionality by introducing “tags”.
 * Tags are lowercase, alphanumeric strings that can contain useful information about a file, such as "beach", "miami" for a photo, or "work", "cv", "application" for a job application document.
 
