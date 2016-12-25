@@ -4,6 +4,6 @@ services:
     api:
         build: ./dropbox-api
         volumes:
-            - /Users/life/Desktop/docker-test/logs:/data/log
+            - <your-log-folder-path>:/data/log
         ports:
             - "8081:8081"
