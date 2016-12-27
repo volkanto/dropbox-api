@@ -1,0 +1,2 @@
+<field name="name" type="text_general" indexed="true" stored="true" />
+<field name="path" type="text_general" indexed="true" stored="true"/>

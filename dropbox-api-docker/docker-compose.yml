@@ -1,9 +1,30 @@
 version: "2"
 
 services:
+    rp:
+        build: ./nginx
+        ports:
+            - "80:80"
+        links:
+            - solr:solr
+            - api:api
+    solr:
+        image: solr
+        ports:
+            - "8983:8983"
+        volumes:
+            - ./solr/conf/schema.xml:/opt/solr/server/dropbox-core/conf/
+        entrypoint:
+            - docker-entrypoint.sh
+            - solr-precreate
+            - dropbox-core
     api:
         build: ./dropbox-api
         volumes:
-            - <your-log-folder-path>:/data/log
+            - ./log/:/data/log
         ports:
             - "8081:8081"
+        depends_on:
+            - "solr"
+        links:
+            - solr:solr
