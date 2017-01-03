@@ -76,6 +76,3 @@ When you start application it connects to Dropbox and gets file path and names a
 * [Dropbox Java API Tutorial - Java Tutorial Blog](http://javapapers.com/java/dropbox-java-api-tutorial/)
 * [White House API Standards](https://github.com/WhiteHouse/api-standards)
 * [Getting Started with Spring Data Solr - DZone Big Data](https://dzone.com/articles/getting-started-spring-data)
-
-
-#mobilab #docker #spring-boot #dropbox
